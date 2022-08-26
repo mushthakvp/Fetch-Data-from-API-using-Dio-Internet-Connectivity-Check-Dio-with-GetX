@@ -9,11 +9,14 @@ class PostController extends GetxController {
     super.onInit();
   }
 
-  var url = 'https://jsonplaceholder.typicode.com/posts';
+  String url = 'https://jsonplaceholder.typicode.com/posts';
 
-  RxList<PostModel> posts = RxList();
+  bool isLoading = true;
+
+  List<PostModel> posts = [];
 
   getPosts() async {
+    isLoading = true;
     var response = await DioService().getMethod(url: url);
 
     if (response.statusCode == 200) {
@@ -22,6 +25,8 @@ class PostController extends GetxController {
           posts.add(PostModel.fromJson(element));
         },
       );
+      update();
     }
+    isLoading = false;
   }
 }
